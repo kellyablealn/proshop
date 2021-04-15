@@ -4,7 +4,7 @@ import { Table, Button} from 'react-bootstrap';
 import { useDispatch, useSelector} from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import {listUsers} from '../actions/userActions';
+import {deleteUser, listUsers} from '../actions/userActions';
 
 const UserListScreen = ({history}) => {
     
@@ -16,6 +16,9 @@ const UserListScreen = ({history}) => {
     const userLogin = useSelector(state => state.userLogin);
     const { userInfo } = userLogin;
 
+    const userDelete = useSelector(state => state.userDelete);
+    const { success:successDelete } = userDelete;
+
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
             dispatch(listUsers());
@@ -23,10 +26,11 @@ const UserListScreen = ({history}) => {
             history.push('/login')
         }
         //eslint-disable-next-line
-    }, [dispatch, history]);
+    }, [dispatch, history, successDelete]);
 
-    const deleteHandler = () => {
-        console.log('delete');
+    const deleteHandler = (id) => {
+        if (window.confirm('Are you sure?'));
+        dispatch(deleteUser(id));
     };
 
     return (
@@ -65,14 +69,14 @@ const UserListScreen = ({history}) => {
                                         )}
                                     </td>
                                     <td>
-                                        <LinkContainer to={`/users/${user._id}/edit`}>
+                                        <LinkContainer to={`/admin/users/${user._id}/edit`}>
                                             <Button variant='light' className='bt-sm'>
                                                 <i className='fas fa-edit'></i>
                                             </Button>
                                         </LinkContainer>
                                         <Button variant='danger' className='bt-sm'
                                             onClick={() => deleteHandler(user._id)}>
-                                            <i className='fas fa-edit'></i>
+                                            <i className='fas fa-trash'></i>
                                         </Button>
                                     </td>
                                 </tr>
