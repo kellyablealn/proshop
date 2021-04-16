@@ -81,25 +81,11 @@ const udpateProduct = asyncHandler(async (req, res) => {
         product.description = description;
 
         const updatedProduct = await product.save();
-        res.json(updatedProduct);
+        return res.json(updatedProduct);
     } else {
         res.status(404);
         throw new Error('Product not found');
     }
-    ({
-        name: 'Sample name',
-        price: 0,
-        user: req.user._id,
-        image: '/images/sample.jpg',
-        brand: 'Sample brand',
-        category: 'Sample category',
-        countInStock: 0,
-        newReviews: 0,
-        description: 'Sample description'
-    });
-
-    const createdProduct = await product.save();
-    res.status(201).json(product);
 });
 
 export { getProductById, 
